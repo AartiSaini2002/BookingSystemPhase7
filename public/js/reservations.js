@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("reservationForm");
   const messageBox = document.getElementById("message");
   const reservationList = document.getElementById("reservationList");
+  let reservationsCache = [];
 
   const reservationIdInput = document.getElementById("reservationId");
   const resourceIdInput = document.getElementById("resourceId");
@@ -25,9 +26,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const noteInput = document.getElementById("note");
   const statusInput = document.getElementById("status");
 
+  const createBtn = document.getElementById("createBtn");
   const updateBtn = document.getElementById("updateBtn");
   const deleteBtn = document.getElementById("deleteBtn");
-  const clearBtn = document.getElementById("clearBtn");
+  
 
   const tokenPayload = getTokenPayload();
 
@@ -161,8 +163,9 @@ document.addEventListener("DOMContentLoaded", () => {
         showMessage("error", body?.error || "Failed to load reservations.");
         return;
       }
+reservationsCache = body.data || [];
+renderReservationList(reservationsCache);
 
-      renderReservationList(body.data || []);
     } catch (error) {
       console.error(error);
       showMessage("error", "Unable to load reservations.");
@@ -174,6 +177,11 @@ document.addEventListener("DOMContentLoaded", () => {
     clearMessage();
 
     if (!validateForm()) return;
+     const existing = reservationsCache?.find(r => r.user_id === Number(userIdInput.value));
+  if (existing) {
+    showMessage("error", "A reservation already exists for this user. Duplicate userId is not allowed.");
+    return;
+  }
 
     try {
       const response = await fetch("/api/reservations", {
@@ -267,11 +275,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(error);
       showMessage("error", "Unable to delete reservation.");
     }
-  });
-
-  clearBtn.addEventListener("click", () => {
-    resetForm();
-    clearMessage();
   });
 
   loadReservations();
