@@ -6,9 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reservations | Booking System</title>
 
-    <!-- Tailwind -->
+    <!-- Tailwind CDN + Brand config -->
     <script src="https://cdn.tailwindcss.com"></script>
-
     <script>
         tailwind.config = {
             theme: {
@@ -40,24 +39,42 @@
 
 <!-- HEADER -->
 <header class="sticky top-0 z-40 bg-brand-dark text-white shadow-soft">
-    <div class="mx-auto max-w-7xl px-6 flex justify-between h-16 items-center">
-        <a href="/" class="flex items-center gap-3">
-            <img src="logo.svg" alt="Booking System" class="h-10 w-10">
-            <div>
-                <span class="block text-sm font-semibold">Booking System</span>
-                <span class="text-xs text-white/70">Secure resource booking</span>
+        <div class="mx-auto max-w-7xl px-6">
+            <div class="flex h-16 items-center justify-between">
+                <a href="/" class="flex items-center gap-3 flex-1">
+                    <img src="logo.svg" alt="Booking System" class="h-10 w-10">
+                    <div class="leading-tight">
+                        <span class="block text-sm font-semibold">
+                            Booking System
+                        </span>
+                        <span class="block text-xs text-white/70">
+                            Secure resource booking
+                        </span>
+                    </div>
+                </a>
+                <nav class="flex items-center gap-3">
+                    <a href="/resources" data-auth="user"
+                        class="res-link rounded-xl border border-white/20 px-4 py-2 text-sm font-semibold hover:bg-white/10 w-40 text-center cursor-not-allowed pointer-events-none">
+                        Resources
+                    </a>
+                    <a href="/reservations" data-auth="user"
+                        class="res-link rounded-xl border border-white/20 px-4 py-2 text-sm font-semibold hover:bg-white/10 w-40 text-center cursor-not-allowed pointer-events-none">
+                        Reservations
+                    </a>
+                    <a href="/register" data-auth="guest" class="auth-link rounded-xl border border-white/20 px-4 py-2 text-sm font-semibold hover:bg-white/10 w-40 text-center">
+                        Register
+                    </a>
+                    <a href="/login" data-auth="guest" class="auth-link rounded-xl border border-white/20 px-4 py-2 text-sm font-semibold hover:bg-white/10 w-40 text-center">
+                        Sign in
+                    </a>
+                    <button onclick="logout()" data-auth="user" class="auth-link hidden rounded-xl bg-brand-primary px-4 py-2 text-sm font-semibold text-white w-40 text-center">
+                        Sign out
+                    </button>
+                </nav>
             </div>
-        </a>
+        </div>
+    </header>
 
-        <nav class="flex gap-3">
-            <a href="/resources" class="rounded-xl border px-4 py-2 text-sm hover:bg-white/10">Resources</a>
-            <a href="/reservations" class="rounded-xl border px-4 py-2 text-sm bg-white/10">Reservations</a>
-            <button onclick="logout()" class="rounded-xl bg-brand-primary px-4 py-2 text-sm text-white">
-                Sign out
-            </button>
-        </nav>
-    </div>
-</header>
 
 <!-- MAIN -->
 <main class="mx-auto max-w-7xl px-6 flex-grow">
@@ -68,6 +85,7 @@
         <h1 class="text-3xl font-semibold">Reservations</h1>
         <p class="text-sm text-black/60 mt-2">
             Create, update, and manage reservations.
+            Please fill all required <span class="text-red-500">(*)</span> fields.
         </p>
     </div>
 </section>
@@ -90,29 +108,29 @@
 
 <!-- Resource -->
 <div>
-<label class="block text-sm font-semibold">Resource ID</label>
-<input id="resourceId" type="number" placeholder="Enter resource ID"
+<label class="block text-sm font-semibold">Resource ID <span class="text-red-500">*</span> </label>
+<input id="resourceId" required type="number" placeholder="Enter resource ID"
 class="mt-2 w-full rounded-2xl border px-4 py-3">
 </div>
 
 <!-- User -->
 <div>
-<label class="block text-sm font-semibold">User ID</label>
-<input id="userId" type="number"  placeholder="Enter user ID"
+<label class="block text-sm font-semibold">User ID <span class="text-red-500">*</span> </label>
+<input id="userId" required type="number"  placeholder="Enter user ID"
 class="mt-2 w-full rounded-2xl border px-4 py-3">
 </div>
 
 <!-- Start -->
 <div>
-<label class="block text-sm font-semibold">Start Time</label>
-<input id="startTime" type="datetime-local" placeholder="Select start time"
+<label class="block text-sm font-semibold">Start Time <span class="text-red-500">*</span> </label>
+<input id="startTime" required type="datetime-local" placeholder="Select start time"
 class="mt-2 w-full rounded-2xl border px-4 py-3">
 </div>
 
 <!-- End -->
 <div>
-<label class="block text-sm font-semibold">End Time</label>
-<input id="endTime" type="datetime-local" placeholder="Select end time"
+<label class="block text-sm font-semibold">End Time <span class="text-red-500">*</span> </label>
+<input id="endTime" required type="datetime-local" placeholder="Select end time"
 class="mt-2 w-full rounded-2xl border px-4 py-3">
 </div>
 
@@ -126,10 +144,10 @@ class="mt-2 w-full rounded-2xl border px-4 py-3">
 <!-- Status -->
 <div>
 <label for="status" class="block text-sm font-semibold">
-  Status
+  Status <span class="text-red-500">*</span>
 </label>
 
-<select id="status" class="mt-2 w-full rounded-2xl border px-4 py-3">
+<select id="status" required class="mt-2 w-full rounded-2xl border px-4 py-3">
   <option value="active">Active</option>
   <option value="cancelled">Cancelled</option>
 </select>
@@ -184,16 +202,50 @@ Click an item to edit or delete it.
 
 </main>
 
-<!-- FOOTER -->
-<footer class="bg-brand-dark text-white">
-    <div class="max-w-7xl mx-auto px-6 py-6 text-xs text-white/60">
-        © <span id="year"></span> Booking System
-    </div>
-</footer>
+ <!-- Footer -->
+    <footer class="bg-brand-dark text-white">
+        <div class="mx-auto max-w-7xl px-6 py-10">
 
-<script>
-document.getElementById("year").textContent = new Date().getFullYear();
-</script>
+            <!-- Top row -->
+            <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+
+                <!-- Brand -->
+                <div class="flex items-center gap-3">
+                    <img src="logo.svg" alt="Booking System" class="h-8 w-8 opacity-90">
+                    <div class="leading-tight">
+                        <p class="text-sm font-semibold">Booking System</p>
+                        <p class="text-xs text-white/60">
+                            Secure resource booking
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Footer navigation -->
+                <nav class="flex items-center gap-3 text-sm text-white/70">
+                    <a href="/privacypolicy"
+                        class="rounded-full px-3 py-1 hover:bg-white/10 hover:text-white transition cursor-not-allowed pointer-events-none">Privacy</a>
+                    <span class="text-white/30">|</span>
+                    <a href="/terms"
+                        class="rounded-full px-3 py-1 hover:bg-white/10 hover:text-white transition cursor-not-allowed pointer-events-none">Terms</a>
+                    <span class="text-white/30">|</span>
+                    <a href="/cookiepolicy"
+                        class="rounded-full px-3 py-1 hover:bg-white/10 hover:text-white transition cursor-not-allowed pointer-events-none">Cookies</a>
+                </nav>
+
+            </div>
+
+            <!-- Divider -->
+            <div class="mt-8 border-t border-white/10 pt-4 text-xs text-white/50">
+                © <span id="year"></span> Ville Heikkiniemi. All rights reserved. Source code licensed under the MIT
+                License.
+            </div>
+
+        </div>
+    </footer>
+
+   <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
 
 </body>
 </html>

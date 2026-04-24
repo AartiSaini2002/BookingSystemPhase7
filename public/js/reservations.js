@@ -60,11 +60,26 @@ function clearForm() {
 }
 
 // ==========================
-// CREATE
+// CREATE   
 // ==========================
+
 async function createReservation() {
   if (selectedId) {
-    alert("⚠️  Reservation already selected. Clear form first before creating new reservation");
+    alert("⚠️ Reservation already selected. Clear form first before creating new reservation");
+    return;
+  }
+
+  // =========================
+  // ✅ REQUIRED FIELD VALIDATION
+  // =========================
+  const resourceId = document.getElementById("resourceId").value;
+  const userId = document.getElementById("userId").value;
+  const startTime = document.getElementById("startTime").value;
+  const endTime = document.getElementById("endTime").value;
+  const status = document.getElementById("status").value;
+
+  if (!resourceId || !userId || !startTime || !endTime || !status) {
+    alert("⚠️ Please fill all required (*) fields");
     return;
   }
 
@@ -85,10 +100,10 @@ async function createReservation() {
       return;
     }
 
-    // ✅ SUCCESS MESSAGE (IMPORTANT)
+    // ✅ SUCCESS MESSAGE
     alert("✅ Reservation created successfully!");
 
-    // 🔥 CLEAR FORM PROPERLY
+    // 🔥 CLEAR FORM
     clearForm();
 
     // 🔄 reload list
@@ -99,7 +114,6 @@ async function createReservation() {
     alert("❌ Server error. Try again.");
   }
 }
-
 // ==========================
 // UPDATE
 // ==========================
