@@ -2,7 +2,8 @@
 import express from "express";
 import pool from "../db/pool.js";
 import { logEvent } from "../services/log.service.js";
-import { requireAuth } from "../middleware/auth.middleware.js";
+import { requireAuth } from "../../middleware/auth.middleware.js";
+
 
 const router = express.Router();
 router.use(requireAuth);
